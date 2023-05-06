@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="base_repository_run" type="Python.DjangoServer" factoryName="Django server">
+  <configuration default="false" name="natali_chystyakova_project_Run" type="Python.DjangoServer" factoryName="Django server">
     <module name="natali_chystyakova_project" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -7,8 +7,8 @@
       <env name="PYTHONUNBUFFERED" value="1" />
       <env name="DJANGO_SETTINGS_MODULE" value="core.settings" />
     </envs>
-    <option name="SDK_HOME" value="$PROJECT_DIR$/../base_repository__natali_chystyakova/venv/bin/python" />
-    <option name="SDK_NAME" value="Python 3.11 (base_repository__natali_chystyakova)" />
+    <option name="SDK_HOME" value="$USER_HOME$/natali_chystyakova_project/bin/python" />
+    <option name="SDK_NAME" value="Python 3.11 (natali_chystyakova_project)" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -27,7 +27,7 @@
     <option name="port" value="8000" />
     <option name="host" value="" />
     <option name="additionalOptions" value="" />
-    <option name="browserUrl" value="http://127.0.0.1:8000/" />
+    <option name="browserUrl" value="" />
     <option name="runTestServer" value="false" />
     <option name="runNoReload" value="false" />
     <option name="useCustomRunCommand" value="false" />
