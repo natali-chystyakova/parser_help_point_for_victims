@@ -66,14 +66,19 @@ async def main():
 
     data_from_page = get_data_from_page(text=page__text)
 
-    for item in data_from_page:
-        return item
-
+    # for item in data_from_page:
+    #     print(item)
+    #
+    #     return item
+    print(data_from_page)
     return data_from_page
 
 
 def get_some_content_from_page_main():
-    asyncio.run(main())
+    data = asyncio.run(main())
+    # for elem in data:
+    #     return elem
+    return data
 
 
 # get_some_content_from_page_main()
