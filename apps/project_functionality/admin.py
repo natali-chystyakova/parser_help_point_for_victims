@@ -8,7 +8,8 @@ from . import models
 @admin.register(models.HelpPoint)
 class HelpPointAdmin(admin.ModelAdmin):
     list_display = (
-        "list_object",
+        "name",
+        "information",
         "created_at",
     )
 
