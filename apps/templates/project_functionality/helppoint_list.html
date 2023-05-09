@@ -1,24 +1,24 @@
-{% extends "_helpers/_base.html" %}
+{%extends "_helpers/_base.html" %}
 
 {%  block title %}
 
-    Пункты помощи для переселенцев
+    Пункти допомоги для переселенців
 {%  endblock  %}
 
 {%  block content %}
-    <h3> Пункты помощи для переселенцев в г.Днепр</h3>
-    <p> Где найти пункты помощи для преселенцев в г.Днепр, помощь с одеждой, едой...</p>
-    <p> Мы собрали для вас всю информацию</p>
+    <h3> Пункти допомоги для переселенців у  м.Днiпро</h3>
+    <p> Де знайти пункти допомоги для переселенців у м.Дніпро, допомога з одягом, їжею...</p>
+    <p> Ми зібрали для вас усю потрiбну інформацію</p>
 
     <ul>
-        {% for point in list_object %}
+        {% for point in object_list %}
             <li class="row my-elements-box">
+            <span><h4>{{ point.name }} </h4></span>
                 <div class="col my-element-style">
-
                     <div class="my-element-content">
-                        <span>{{ point.list_object }} </span>
 
-                        <span>{{ point.created_at }}</span>
+                        <span>{{ point.information |safe}} </span>
+
                     </div >
 
                     <div class="my-element-controls">
@@ -38,4 +38,5 @@
             </li>
         {% endfor %}
     </ul>
+    {%  include "project_functionality/paginator_include.html"  %}
 {% endblock %}
