@@ -24,7 +24,8 @@ def parse_page__site__kust(soup: bs4.BeautifulSoup):
     temp_item_lines = []
     for element in article.children:
         # If element is H4
-        if element.name == "h4" and element.text == "ІІ. Одежда":
+        # if element.name == "h4" and element.text == "ІІ. Одежда":
+        if element.name == "h4" and element.text == "ІІ. Одяг":
             is_found_section = True
 
         if is_found_section:
@@ -60,7 +61,8 @@ def get_data_from_page(text: T_TEXT):
 
 
 async def main():
-    url = "https://kustdnipro.com/ru/gyd-dlya-pereselentsev-bolee-polnogo-v-gorode-net/"
+    # url = "https://kustdnipro.com/ru/gyd-dlya-pereselentsev-bolee-polnogo-v-gorode-net/"
+    url = "https://kustdnipro.com/gid-dlya-pereselentsiv-povnishogo-u-misti-nemaye/"
 
     page__text = await make_request(url=url)
 
