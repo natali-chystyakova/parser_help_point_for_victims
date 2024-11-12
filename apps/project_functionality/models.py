@@ -10,7 +10,7 @@ from django.db import models
 
 class HelpPoint(models.Model):
     name = models.TextField(default=None, null=True, blank=True)
-    information = models.TextField(default=None, null=True, blank=True)
+    information = models.TextField(default=None, null=True, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
