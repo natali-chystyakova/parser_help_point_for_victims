@@ -27,6 +27,7 @@ urlpatterns = [
     path("user/", include("apps.user.urls")),
     path("about/", include("apps.base.urls")),
     path("help points/", include("apps.project_functionality.urls")),
+    path("celery-for-parser/", include("apps.celery_for_parser.urls")),
     path("", include("apps.base.urls_root")),
 ]
 
