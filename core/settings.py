@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import environ
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,10 +56,12 @@ LOCAL_APPS = [
     "apps.user",
     "apps.base",
     "apps.project_functionality",
+    "apps.celery_for_parser",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
+    "django_celery_beat",
 ]
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
@@ -171,3 +174,17 @@ LOGOUT_REDIRECT_URL = "root:index"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # SESSION_SAVE_EVERY_REQUEST = True
+
+
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+
+CELERY_BEAT_SCHEDULE = {
+    "test_task": {
+        "task": "apps.celery_for_parser.tasks.refresh_help_points_task.refresh_help_points_task",  # путь к задаче
+        "schedule": crontab(minute="*/1"),  # every minute
+    },
+}
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_CONNECTION_MAX_RETRIES = 3
+CELERY_BROKER_CONNECTION_RETRY_DELAY = 5

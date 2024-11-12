@@ -2,21 +2,24 @@
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="{% url "root:index"  %}">
-        <img class="logo" src="{% static "/logo/logo.png" %}" alt="site-logo"/>
+    <a href="{% url 'root:index'  %}">
+        <img class="logo" src="{% static '/logo/logo.png' %}" alt="site-logo"/>
     </a>
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin:index' %}">Admin panel</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url "root:index" %}"> Home </a>
+                <a class="nav-link" href="{% url 'root:index' %}"> Home </a>
             </li>
              <li class="nav-item">
-                <a class="nav-link" href="{% url "base:about_us" %}"> About Us </a>
+                <a class="nav-link" href="{% url 'base:about_us' %}"> About Us </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url "project_functionality:list" %}"> Help points</a>
+                <a class="nav-link" href="{% url 'project_functionality:list' %}"> Help points</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'celery_for_parser:index' %}">Celery for parser</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -29,14 +32,14 @@
     {% if user.is_authenticated %}
 
         <li class="last">
-            <p> {{ user.username }} |<a href="{% url "logout" %}"> Logout </a></p>
+            <p> {{ user.username }} |<a href="{% url 'logout' %}"> Logout </a></p>
             <div class="col my-element-style">
                 <div class="user-avatar">
                     {% if user.avatar %}
                         <img src="{{ user.avatar.url }}" alt="Avatar">
                     {% else %}
 
-                        <img src="{% static "/images/avatar-placeholder.svg" %}" alt="Avatar">
+                        <img src="{% static '/images/avatar-placeholder.svg' %}" alt="Avatar">
 
                     {% endif %}
 
@@ -49,7 +52,7 @@
 
     {% else %}
         <li class="last">
-            <a href="{% url "login" %}"> Login </a>| <a href="{% url "user:signup" %}"> Signup users</a>
+            <a href="{% url 'login' %}"> Login </a>| <a href="{% url 'user:signup' %}"> Signup users</a>
         </li>
     {% endif %}
 
