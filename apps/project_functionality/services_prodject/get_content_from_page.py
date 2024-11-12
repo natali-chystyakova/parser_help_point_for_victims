@@ -81,6 +81,3 @@ def get_some_content_from_page_main():
     # for elem in data:
     #     return elem
     return data
-
-
-# get_some_content_from_page_main()
