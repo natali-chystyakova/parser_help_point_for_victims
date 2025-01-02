@@ -67,3 +67,13 @@ header {
     background-color: #87CEFA;
     padding: 20px;
 }
+
+.selected {
+    font-weight: bold;
+    color: #fdc073;
+
+    border-bottom: 1px solid #fdc073;
+}
+a:hover {
+color: #fdc073;
+}
