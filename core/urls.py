@@ -20,16 +20,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
+    path("captcha/", include("captcha.urls")),
     path("user/", include("apps.user.urls")),
     path("about/", include("apps.base.urls")),
     path("help points/", include("apps.project_functionality.urls")),
     path("celery-for-parser/", include("apps.celery_for_parser.urls")),
     path("", include("apps.base.urls_root")),
-]
+] + debug_toolbar_urls()
 
 
 if settings.DEBUG:
