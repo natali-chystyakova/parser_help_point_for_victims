@@ -53,6 +53,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 LOCAL_APPS = [
+    "debug_toolbar",
     "apps.user",
     "apps.base",
     "apps.project_functionality",
@@ -62,6 +63,7 @@ THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_celery_beat",
+    "captcha",
 ]
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
@@ -73,6 +75,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 USE_EXTRA_MIDDLEWARES = env.bool("CUSTOM__USE_EXTRA_MIDDLEWARES", False)
@@ -188,3 +191,7 @@ CELERY_BEAT_SCHEDULE = {
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_CONNECTION_MAX_RETRIES = 3
 CELERY_BROKER_CONNECTION_RETRY_DELAY = 5
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
