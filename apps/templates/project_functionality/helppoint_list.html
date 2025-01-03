@@ -14,10 +14,17 @@
         {% for point in object_list %}
             <li class="row my-elements-box">
             <span><h4>{{ point.name }} </h4></span>
+                <p>{{ point.sect }}</p>
+                <p>{{ point.created_at }}</p>
                 <div class="col my-element-style">
                     <div class="my-element-content">
 
-                        <span>{{ point.information |safe}} </span>
+                        <span>
+                            {% autoescape off %}
+                             {{point.information}}
+                            {%endautoescape %}
+
+                        </span>
 
                     </div >
 

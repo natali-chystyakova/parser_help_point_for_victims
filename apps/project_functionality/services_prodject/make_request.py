@@ -8,6 +8,15 @@ from apps.project_functionality.services_prodject.typings import T_URL, T_TEXT
 from apps.logging.loggers import get_core_logger
 
 
+# T_URL: TypeAlias = str
+# T_TEXT: TypeAlias = str
+
+# import pathlib
+# from typing import Final
+#
+# from apps.config.path import FILES_OUTPUT_PATH
+
+
 async def make_request(url: T_URL) -> T_TEXT:
     logger = get_core_logger()
     hash_for_input = hashlib.sha3_512(url.encode())

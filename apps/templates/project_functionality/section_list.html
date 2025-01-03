@@ -1,0 +1,44 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% load static %}
+
+<!--    {% for sections in object_list %}-->
+<!--        <li class="row my-elements-box">-->
+<!--&lt;!&ndash;            <span><h4>{{ sections.name_section }} </h4></span>&ndash;&gt;-->
+<!--			<li><a href="{{ sections.get_absolute_url }}"> тот с object_list{{ sections.name_section }}</a></li>-->
+<!--        </li>-->
+
+<!--    {% endfor %}-->
+
+    <!-- Sidebar слева -->
+
+<ul class="nav flex-column">
+	{% if cat_selected == 0 %}
+			<li class="selected">Усi категорii</li>
+	{% else %}
+			<li><a class="nav-link" href="{% url 'project_functionality:list' %}">Усi категорii</a></li>
+	{% endif %}
+
+
+<!--	{% for section in sections %}-->
+<!--            <li><a href="{{ section.get_absolute_url }}">{{ section.name_section }}</a></li>\-->
+<!--	{% endfor %}-->
+
+	{% for point in sections %}
+		{% if point.pk == cat_selected %}
+			<li class="selected">{{point.name_section}}</li>
+		{% else %}
+			<li><a class="nav-link" href="{{ point.get_absolute_url }}">{{point.name_section}}</a></li>
+		{% endif %}
+	{% endfor %}
+</ul>
+<!-- Sidebar слева -->
+</body>
+</html>

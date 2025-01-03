@@ -1,0 +1,22 @@
+{%extends "_helpers/_base.html" %}
+{% load crispy_forms_tags %}
+{%  block title %}
+
+    Зворотнiй зв'язок
+{%  endblock  %}
+
+{% block content %}
+<h1>{{title}}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-error">{{ form.non_field_errors }}</div>
+
+
+    {{ form|crispy }}
+
+    <button type="submit" class="btn btn-primary">Вiдправити</button>
+</form>
+
+{% endblock %}
