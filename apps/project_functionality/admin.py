@@ -10,7 +10,10 @@ class HelpPointAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        "information",
+        "address",
+        "phone",
+        "link",
+        # "information",
         "sect",
         "created_at",
     )
@@ -20,7 +23,8 @@ class HelpPointAdmin(admin.ModelAdmin):
     )
     search_fields = (
         "name",
-        "information",
+        "address",
+        "phone",
     )
     list_filter = ("created_at",)
 

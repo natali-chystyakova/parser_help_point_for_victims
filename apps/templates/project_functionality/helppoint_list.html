@@ -20,21 +20,26 @@
                     <div class="my-element-content">
 
                         <span>
-                            {% autoescape off %}
-                             {{point.information}}
-                            {%endautoescape %}
-
+                        {% if point.address %}
+                            <p>Адреса: {{ point.address }}</p>
+                        {% endif %}
+                        {% if point.phone %}
+                            <p>Телефон: {{ point.phone }}</p>
+                        {% endif %}
+                        {% if point.link %}
+                            <p>Ссилка: <a href="{{ point.link }}" target="_blank">{{ point.link }}</a></p>
+                        {% endif %}
                         </span>
 
                     </div >
 
                     <div class="my-element-controls">
-                        <a href="{% url "project_functionality:update" pk=point.id %}">
+                        <a href="{% url 'project_functionality:update' pk=point.id %}">
                             <button class="btn btn-success">
                                 Edit
                             </button>
                         </a>
-                        <a href="{% url "project_functionality:delete" pk=point.id %}">
+                        <a href="{% url 'project_functionality:delete' pk=point.id %}">
                             <button class="btn btn-warning">
                                 Delete
                             </button>
@@ -45,5 +50,5 @@
             </li>
         {% endfor %}
     </ul>
-    {%  include "project_functionality/paginator_include.html"  %}
+    {% include "project_functionality/paginator_include.html" %}
 {% endblock %}

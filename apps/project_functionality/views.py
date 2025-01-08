@@ -6,8 +6,8 @@ from django.urls import reverse_lazy
 from apps.project_functionality.forms import ContactForm
 from apps.project_functionality.models import HelpPoint, Section
 from apps.project_functionality.tools import paginate_by_condition
-from django.http import Http404
-from django.shortcuts import render, redirect
+
+from django.shortcuts import redirect
 
 
 class HelpPointListView(ListView):
@@ -45,7 +45,9 @@ class HelpPointUpdateView(UpdateView):
     model = HelpPoint
     fields = (
         "name",
-        "information",
+        "address",
+        "phone",
+        "link",
     )
     success_url = reverse_lazy("project_functionality:list")
 
@@ -60,7 +62,6 @@ class HelpPointUpdateView(UpdateView):
 class HelpPointDeleteView(DeleteView):
     model = HelpPoint
 
-    success_url = reverse_lazy("project_functionality:list")
     success_url = reverse_lazy("project_functionality:list")
 
     def get_context_data(self, **kwargs):
@@ -83,24 +84,6 @@ class SectionListView(ListView):
         context_data["title"] = "Section"
 
         return context_data
-
-
-def show_section(request, sect_id):
-    points = HelpPoint.objects.filter(id=sect_id)
-    sections = Section.objects.all()
-
-    if len(points) == 0:
-        raise Http404()
-
-    context = {
-        "points": points,
-        "sections": sections,
-        "title": "Отображение по рубрикам",
-        "cat_selected": sect_id,
-    }
-
-    # return render(request, 'project_functionality/section_list.html', context=context)
-    return render(request, "project_functionality/helppoint_list.html", context=context)
 
 
 class ShowSectionListView(ListView):
