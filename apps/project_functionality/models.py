@@ -1,15 +1,9 @@
 from django.db import models
 from django.urls import reverse
 
-# class Url(models.Model):
-#     url = models.CharField(max_length=100)
-#     address = models.CharField(max_length=100, default=None, null=True, blank=True)
-#     phone = models.CharField(max_length=100, default=None, null=True, blank=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
 
 class Section(models.Model):
-    name_section = models.CharField(max_length=255)  # Название секции (например, "Одежда")
+    name_section = models.CharField(max_length=300)  # Название секции (например, "Одежда")
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -26,8 +20,11 @@ class Section(models.Model):
 
 
 class HelpPoint(models.Model):
-    name = models.TextField(default=None, null=True, blank=True)
-    information = models.TextField(default=None, null=True, blank=True, unique=False)
+    name = models.TextField(max_length=300, default=None, null=True, blank=True)
+    address = models.TextField(default=None, null=True, blank=True)  # Адрес
+    phone = models.TextField(default=None, null=True, blank=True)  # Телефон
+    link = models.TextField(default=None, null=True, blank=True)  # Ссылка
+    # information = models.TextField(default=None, null=True, blank=True, unique=False)
     created_at = models.DateTimeField(auto_now_add=True)
     sect = models.ForeignKey(
         Section,
@@ -40,11 +37,9 @@ class HelpPoint(models.Model):
 
     class Meta:
         ordering = ["id"]
+        unique_together = (("name", "sect"),)
 
     def __str__(self) -> str:
         return f"{self.name}"
 
     __repr__ = __str__
-
-    # def get_absolute_url(self):
-    #     return reverse('project_functionality:list', kwargs={'sect': self.sect})
