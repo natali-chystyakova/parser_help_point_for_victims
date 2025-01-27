@@ -1,54 +1,205 @@
-{%extends "_helpers/_base.html" %}
+{% extends "_helpers/_base.html" %}
 
+{% load custom_filters %}
 {%  block title %}
 
     Пункти допомоги для переселенців
 {%  endblock  %}
 
 {%  block content %}
-    <h3> Пункти допомоги для переселенців у  м.Днiпро</h3>
+
+<div class="row">
+
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+
+                    {% include 'project_functionality/section_list.html' %}
+
+                </div>
+            </nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <h3> Пункти допомоги для переселенців у  м.Днiпро</h3>
     <p> Де знайти пункти допомоги для переселенців у м.Дніпро, допомога з одягом, їжею...</p>
     <p> Ми зібрали для вас усю потрiбну інформацію</p>
 
     <ul>
-        {% for point in object_list %}
-            <li class="row my-elements-box">
-            <span><h4>{{ point.name }} </h4></span>
-                <p>{{ point.sect }}</p>
-                <p>{{ point.created_at }}</p>
-                <div class="col my-element-style">
-                    <div class="my-element-content">
+        <div id="help-points">
+            {% for point in object_list %}
+                <div class="help-point" id="point-{{ point.id }}">
+                    <li class="row my-elements-box">
+                        <span><h4>{{ point.name }} </h4></span>
+                            <p>{{ point.sect }}</p>
+                            <p>{{ point.created_at }}</p>
+                            <div class="col my-element-style">
+                                <div class="my-element-content">
 
-                        <span>
-                        {% if point.address %}
-                            <p>Адреса: {{ point.address }}</p>
-                        {% endif %}
-                        {% if point.phone %}
-                            <p>Телефон: {{ point.phone }}</p>
-                        {% endif %}
-                        {% if point.link %}
-                            <p>Ссилка: <a href="{{ point.link }}" target="_blank">{{ point.link }}</a></p>
-                        {% endif %}
-                        </span>
 
-                    </div >
+                                    {% if point.address %}
+                                        <p>Адреса: {{ point.address }}</p>
+                                        <a href="{% url 'project_functionality:help_point_map' point.id %}">Подивитись на карті</a>
+                                    {% endif %}
 
-                    <div class="my-element-controls">
-                        <a href="{% url 'project_functionality:update' pk=point.id %}">
-                            <button class="btn btn-success">
-                                Edit
-                            </button>
-                        </a>
-                        <a href="{% url 'project_functionality:delete' pk=point.id %}">
-                            <button class="btn btn-warning">
-                                Delete
-                            </button>
-                        </a>
+                                    {% if point.phone %}
+                                        <p>
+                                            Телефон:
+                                                {% for phone in point.phone|split_by_semicolon %}
+                                                <br><a href="tel:{{ phone }}">{{ phone }}</a>
+                                                {% endfor %}
+                                        </p>
+                                    {% endif %}
 
-                    </div>
+
+                                    {% if point.link %}
+                                        <p>Ссилка: <a href="{{ point.link }}" target="_blank">{{ point.link }}</a></p>
+                                    {% endif %}
+
+                                    {% if point.latitude %}
+                                        <p>Широта: {{ point.latitude }}</p>
+                                    {% endif %}
+                                    {% if point.longitude %}
+                                        <p>Довгота: {{ point.longitude }}</p>
+                                        <p id="distance-{{ point.id }}">Відстань розраховується...</p>
+                                    {% endif %}
+
+                                </div >
+
+
+                                <div class="my-element-controls">
+                                    <a href="{% url 'project_functionality:update' pk=point.id %}">
+                                        <button class="btn btn-success">
+                                            Edit
+                                        </button>
+                                        </a>
+                                    <a href="{% url 'project_functionality:delete' pk=point.id %}">
+                                        <button class="btn btn-warning">
+                                            Delete
+                                        </button>
+                                    </a>
+
+                                </div>
+                            </div>
+                    </li>
                 </div>
-            </li>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </ul>
     {% include "project_functionality/paginator_include.html" %}
-{% endblock %}
+
+
+
+            </main>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}"></script>
+
+
+<script>
+// Запрос к Google Geolocation API для получения точных координат пользователя
+fetch('https://www.googleapis.com/geolocation/v1/geolocate?key={{ google_api_key }}', {
+    method: 'POST', // POST-запрос для получения координат
+})
+    .then(response => response.json()) // Парсим JSON-ответ
+    .then(data => {
+        let lat = data.location.lat; // Получаем широту
+        let lng = data.location.lng; // Получаем долготу
+
+        // Проверяем, если координаты слишком далеко от Днепра (например, более чем на 1 градус)
+        if (Math.abs(lat - 48.4647) > 1 || Math.abs(lng - 35.0462) > 1) {
+            lat = 48.4647;  // Широта для Днепра
+            lng = 35.0462;  // Долгота для Днепра
+            console.log('Использованы координаты по умолчанию для Днепра');
+        }
+
+        console.log('Точные координаты пользователя:');
+        console.log('Широта:', lat);
+        console.log('Долгота:', lng);
+
+        // Отправляем координаты на сервер для расчета расстояния
+        fetch(`/help-points/list/distances/?latitude=${lat}&longitude=${lng}`)
+            .then(response => response.json()) // Парсим ответ от сервера
+            .then(data => {
+                console.log('Ответ API:', data);
+                if (data.distances) {
+                    // Обновляем расстояния для всех точек помощи
+                    data.distances.forEach(point => {
+                        const distanceElement = document.getElementById(`distance-${point.id}`);
+                        if (distanceElement) {
+                            distanceElement.textContent = `Вiдстань до пункту допомоги: ${point.distance} км`;
+                        } else {
+                            console.warn(`Элемент с id="distance-${point.id}" не найден.`);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при расчете расстояния:', error);
+                // Обновляем текст ошибки для всех точек
+                document.querySelectorAll('[id^="distance-"]').forEach(el => {
+                    el.textContent = 'Ошибка расчета расстояния';
+                });
+            });
+    })
+    .catch(error => {
+        console.error('Ошибка получения координат через Google Geolocation API:', error);
+        // Обновляем текст ошибки, если не удалось получить координаты
+        document.querySelectorAll('[id^="distance-"]').forEach(el => {
+            el.textContent = 'Ошибка получения координат пользователя';
+        });
+    });
+</script>
+
+
+<!--<script>-->
+<!--document.addEventListener('DOMContentLoaded', () => {-->
+<!--    navigator.geolocation.getCurrentPosition((position) => {-->
+<!--        let userLat = position.coords.latitude;-->
+<!--        let userLng = position.coords.longitude;-->
+
+<!--        // Проверяем, если координаты слишком далеко от Днепра (например, более чем на 1 градус)-->
+<!--        if (Math.abs(userLat - 48.4647) > 1 || Math.abs(userLng - 35.0462) > 1) {-->
+<!--            userLat = 48.4647;  // Широта для Днепра-->
+<!--            userLng = 35.0462;  // Долгота для Днепра-->
+<!--            console.log('Использованы координаты по умолчанию для Днепра');-->
+<!--        }-->
+
+<!--        // Отправляем запрос на сервер-->
+<!--        fetch(`/help-points/list/distances/?latitude=${userLat}&longitude=${userLng}`)-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('Network response was not ok');-->
+<!--                }-->
+<!--                return response.json();-->
+<!--            })-->
+<!--            .then(data => {-->
+<!--                console.log('Ответ API:', data); // Проверяем данные-->
+<!--                if (data.distances) {-->
+<!--                    // Обновляем расстояния для всех точек-->
+<!--                    data.distances.forEach(point => {-->
+<!--                        const distanceElement = document.getElementById(`distance-${point.id}`);-->
+<!--                        if (distanceElement) {-->
+<!--                            distanceElement.textContent = `Вiдстань до пункту допомоги: ${point.distance} км`;-->
+<!--                        } else {-->
+<!--                            console.warn(`Элемент с id="distance-${point.id}" не найден.`);-->
+<!--                        }-->
+<!--                    });-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Ошибка при расчете расстояния:', error);-->
+<!--                // Обновляем текст ошибки для всех точек-->
+<!--                document.querySelectorAll('[id^="distance-"]').forEach(el => {-->
+<!--                    el.textContent = 'Ошибка расчета расстояния';-->
+<!--                });-->
+<!--            });-->
+<!--    }, (error) => {-->
+<!--        console.error('Ошибка получения координат пользователя:', error);-->
+<!--        // Обновляем текст ошибки, если координаты не получены-->
+<!--        document.querySelectorAll('[id^="distance-"]').forEach(el => {-->
+<!--            el.textContent = 'Ошибка получения координат пользователя';-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+<!--</script>-->
+
+
+{% endblock content %}
