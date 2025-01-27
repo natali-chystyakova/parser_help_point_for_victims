@@ -19,6 +19,7 @@
 from celery.result import AsyncResult
 from django.views.generic import TemplateView
 from apps.celery_for_parser.tasks.refresh_help_points_task import refresh_help_points_task
+from apps.project_functionality.models import Section
 
 
 class CeleryView(TemplateView):
@@ -28,4 +29,7 @@ class CeleryView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         result: AsyncResult = refresh_help_points_task.delay()
         context_data["result_id"] = result.id
+        # Добавляем секции и выбранную категорию
+        context_data["sections"] = Section.objects.all()
+        context_data["cat_selected"] = None  # Или вычислить выбранную категорию
         return context_data
