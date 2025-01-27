@@ -16,6 +16,8 @@ class HelpPointAdmin(admin.ModelAdmin):
         # "information",
         "sect",
         "created_at",
+        "latitude",
+        "longitude",
     )
     list_display_links = (
         "id",

@@ -3,9 +3,10 @@ from celery import shared_task
 from apps.project_functionality.models import HelpPoint, Section
 from apps.project_functionality.services_prodject.get_content_from_page import get_some_content_from_page_main
 
+
 # from django.db import models
-
-
+from django.conf import settings
+import requests
 import re
 
 MAX_URL_LENGTH = 200
@@ -40,6 +41,26 @@ def extract_link(text):
     # Ищем URL-адреса
     match = re.search(r"https?://[^\s]+", text)
     return match.group(0) if match else None
+
+
+def get_coordinates(address):
+    api_key = settings.GOOGLE_API_KEY
+    full_address = f"Україна, Дніпро, {address}"
+    # full_address = f"Україна, Дніпро, вул. Січеславська Набережна, 33"
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={full_address}&key={api_key}"
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()  # Проверка статуса ответа
+        data = response.json()
+        if data.get("results"):
+            location = data["results"][0]["geometry"]["location"]
+            return location["lat"], location["lng"]
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching coordinates: {e}")
+    print(f"Request URL: {url}")
+    print(f"Response: {response.json()}")
+    return None, None
 
 
 @shared_task
@@ -99,6 +120,11 @@ def refresh_help_points_task():
             combined_phone = "; ".join(phones)
             combined_link = "; ".join(links)
 
+            if combined_address:
+                latitude, longitude = get_coordinates(combined_address)
+            else:
+                latitude, longitude = None, None
+
             # Убедитесь, что объект содержит хотя бы одно значение в адресе, телефоне или ссылке
             if combined_address or combined_phone or combined_link:
                 # Проверяем, что name отличается от извлеченных данных
@@ -111,6 +137,8 @@ def refresh_help_points_task():
                             "address": combined_address,
                             "phone": combined_phone,
                             "link": combined_link,
+                            "latitude": latitude,  # Широта
+                            "longitude": longitude,  # Долгота
                         },
                     )
             else:

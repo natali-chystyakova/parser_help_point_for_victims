@@ -11,6 +11,7 @@ class Section(models.Model):
         return self.name_section
 
     def get_absolute_url(self):
+        # return reverse("project_functionality:section_detail", kwargs={"sect_id": self.pk})
         return reverse("project_functionality:section", kwargs={"sect_id": self.pk})
 
     class Meta:
@@ -25,6 +26,8 @@ class HelpPoint(models.Model):
     phone = models.TextField(default=None, null=True, blank=True)  # Телефон
     link = models.TextField(default=None, null=True, blank=True)  # Ссылка
     # information = models.TextField(default=None, null=True, blank=True, unique=False)
+    latitude = models.FloatField(null=True, blank=True)  # Широта
+    longitude = models.FloatField(null=True, blank=True)  # Долгота
     created_at = models.DateTimeField(auto_now_add=True)
     sect = models.ForeignKey(
         Section,
@@ -34,6 +37,9 @@ class HelpPoint(models.Model):
         null=True,
         blank=True,
     )  # Связь с секцией
+
+    def get_absolute_url(self):
+        return reverse("project_functionality:helppoint_detail", args=[self.id])
 
     class Meta:
         ordering = ["id"]

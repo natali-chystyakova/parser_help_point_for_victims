@@ -1,0 +1,35 @@
+{% extends "_helpers/_base.html" %}
+
+
+{%  block title %}
+
+    {{ point.name }} - Map
+{%  endblock  %}
+{% block content %}
+  <h1>Карта для {{ point.name }} {{ point.address }}</h1>
+
+  <div id="map" style="height: 500px;"></div>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}"></script>
+  <script>
+    function initMap() {
+      var location = {lat: {{ point.latitude }}, lng: {{ point.longitude }}};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: location
+      });
+
+      var marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "{{ point.name }}"
+      });
+    }
+
+    // Подключаем Google Maps API
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap";
+    script.async = true;
+    document.head.appendChild(script);
+  </script>
+{% endblock %}
+

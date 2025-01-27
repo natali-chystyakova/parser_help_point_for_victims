@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from geopy.distance import geodesic
+
 
 User = get_user_model()
 
@@ -22,3 +24,10 @@ def paginate_by_condition(paginator, page):
         paginated_queryset = paginator.page(paginator.num_pages)
 
     return paginated_queryset
+
+
+# Для вычисления расстояния
+
+
+def calculate_distance(user_coords, help_point_coords):
+    return geodesic(user_coords, help_point_coords).kilometers

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import environ
 from celery.schedules import crontab
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +28,9 @@ env.read_env(BASE_DIR.joinpath(".env"))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 SECRET_KEY = env.str("DJANGO__SECRET_KEY")
+
+# Reading the API key
+GOOGLE_API_KEY = env("GOOGLE_API_KEY", default=None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -53,11 +57,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 LOCAL_APPS = [
-    "debug_toolbar",
     "apps.user",
     "apps.base",
     "apps.project_functionality",
     "apps.celery_for_parser",
+    "debug_toolbar",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -192,6 +196,44 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_CONNECTION_MAX_RETRIES = 3
 CELERY_BROKER_CONNECTION_RETRY_DELAY = 5
 
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "127.0.0.1",  # Локальный IP
+    "192.168.1.108",  # Ваш основной локальный IP
+    "172.22.0.1",  # Docker-сеть
+    "172.21.0.1",
+    "172.20.0.1",
+    "172.18.0.1",
+    "172.17.0.1",
+    "172.19.0.1",
 ]
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            # "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+            "propagate": False,
+        },
+    },
+}
+
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # для всех запросов
+}
