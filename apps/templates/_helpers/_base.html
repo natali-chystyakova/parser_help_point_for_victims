@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,11 +14,8 @@
             crossorigin="anonymous"
 
     >
-    <script
-            src="{% static 'bootstrap/js/bootstrap.min.js' %}"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"
-    ></script>
+
+
     <link
             href="{% static 'styles/index.css' %}"
             rel="stylesheet"
@@ -25,30 +23,23 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="{% static './favicon/my_favicon.ico' %}">
     {# [connect_bootstrap]-[END] #}
+
+
+
 </head>
 <body>
 
 <div class="container-fluid">
     {% include "_helpers/_header.html" %}
+    {% block content %}{% endblock %}
 
-    <div class="row">
-            <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                <div class="position-sticky pt-3">
-
-                    {% include 'project_functionality/section_list.html' %}
-
-                </div>
-            </nav>
-
-            <!-- Main Content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                {% block content %}{% endblock %}
-            </main>
-        </div>
 
     {% include "_helpers/_footer.html" %}
-
+    <script
+            src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"
+            integrity="sha384-QH5XT0KWBc6EGZnm2UjXb5jKECjR2m5nHJGb2Ovg1S6Qf7wGOsm5LRV5IexC6PRR"
+            crossorigin="anonymous"
+>   </script>
 
 </div>
 </body>
