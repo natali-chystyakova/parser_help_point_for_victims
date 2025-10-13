@@ -16,4 +16,15 @@ set -o xtrace
 make migrate
 
 # Run application.
-python manage.py runserver 0.0.0.0:8000
+#python manage.py runserver 0.0.0.0:8000
+# Запуск через gunicorn
+
+
+if [ "$RAILWAY_ENVIRONMENT" = "production" ]; then
+    echo "🚀 Running in production mode (gunicorn)..."
+    gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 4
+else
+    echo "💻 Running in development mode (runserver)..."
+    python manage.py runserver 0.0.0.0:8000
+fi
+
