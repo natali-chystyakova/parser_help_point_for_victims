@@ -37,12 +37,21 @@ GOOGLE_API_KEY = env("GOOGLE_API_KEY", default=None)
 DEBUG = env.bool("DJANGO__DEBUG", False)
 
 ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
+
+# Разрешаем Railway-домены всегда
+ALLOWED_HOSTS.extend(
+    [
+        ".up.railway.app",
+    ]
+)
+
 if DEBUG:
     ALLOWED_HOSTS.extend(
         [
             "localhost",
             "0.0.0.0",
             "127.0.0.1",
+            ".up.railway.app",
         ]
     )
 
