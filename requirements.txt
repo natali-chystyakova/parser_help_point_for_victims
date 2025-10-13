@@ -51,3 +51,5 @@ geopy==2.4.1
 
 #for map
 folium==0.19.4
+
+gunicorn==23.0.0
