@@ -202,7 +202,8 @@ CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
 CELERY_BEAT_SCHEDULE = {
     "test_task": {
         "task": "apps.celery_for_parser.tasks.refresh_help_points_task.refresh_help_points_task",  # путь к задаче
-        "schedule": crontab(minute="*/1"),  # every minute
+        # "schedule": crontab(minute="*/1"),  # every minute
+        "schedule": crontab(hour="8", minute="0"),
     },
 }
 
@@ -225,27 +226,27 @@ INTERNAL_IPS = [
 ]
 
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "WARNING",
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            # "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
-            "propagate": False,
-        },
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["console"],
+#         "level": "WARNING",
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             # "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+#             "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG"),
+#             "propagate": False,
+#         },
+#     },
+# }
 
 
 DEBUG_TOOLBAR_CONFIG = {
