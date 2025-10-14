@@ -42,6 +42,7 @@ ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
 ALLOWED_HOSTS.extend(
     [
         ".up.railway.app",
+        "parserhelppointforvictims-production.up.railway.app",
     ]
 )
 
