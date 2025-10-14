@@ -39,12 +39,7 @@ DEBUG = env.bool("DJANGO__DEBUG", False)
 ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
 
 # Разрешаем Railway-домены всегда
-ALLOWED_HOSTS.extend(
-    [
-        ".up.railway.app",
-        "parserhelppointforvictims-production.up.railway.app",
-    ]
-)
+ALLOWED_HOSTS.extend([".up.railway.app", "parserhelppointforvictims-production.up.railway.app"])
 
 if DEBUG:
     ALLOWED_HOSTS.extend(
@@ -52,7 +47,6 @@ if DEBUG:
             "localhost",
             "0.0.0.0",
             "127.0.0.1",
-            ".up.railway.app",
         ]
     )
 
