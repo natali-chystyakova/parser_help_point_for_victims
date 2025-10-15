@@ -22,6 +22,9 @@ make migrate
 
 if [ "$RAILWAY_ENVIRONMENT" = "production" ]; then
     echo "🚀 Running in production mode (gunicorn)..."
+    echo "📦 Collecting static files..."
+    python manage.py collectstatic --noinput
+
     gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 4
 else
     echo "💻 Running in development mode (runserver)..."
