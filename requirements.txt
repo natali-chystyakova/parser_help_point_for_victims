@@ -53,3 +53,5 @@ geopy==2.4.1
 folium==0.19.4
 
 gunicorn==23.0.0
+
+whitenoise==6.11.0
