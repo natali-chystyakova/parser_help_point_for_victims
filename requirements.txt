@@ -55,3 +55,4 @@ folium==0.19.4
 gunicorn==23.0.0
 
 whitenoise==6.11.0
+redis==6.4.0
