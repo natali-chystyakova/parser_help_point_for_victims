@@ -212,7 +212,22 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # SESSION_SAVE_EVERY_REQUEST = True
 
 
-CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+# CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+#
+# CELERY_RESULT_BACKEND = env.str("CELERY_RESULT_BACKEND", default=CELERY_BROKER_URL)
+
+# Определяем, где мы находимся
+ENVIRONMENT = env.str("ENVIRONMENT", default="local")
+
+if ENVIRONMENT == "production":
+    # 🔹 На Railway используем Redis (например, Railway Redis URL)
+    CELERY_BROKER_URL = env.str("REDIS_URL")
+    CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+else:
+    # 🔹 Локально используем RabbitMQ
+    CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", default="amqp://guest:guest@localhost:5672/")
+    CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+
 
 CELERY_BEAT_SCHEDULE = {
     "test_task": {
