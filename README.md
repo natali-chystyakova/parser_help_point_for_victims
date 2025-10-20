@@ -1,7 +1,7 @@
 # 🆘 Help Points for Victims
 
 **parser_help_point_for_victims** is a Django application that collects and displays humanitarian help points for internally displaced persons on an interactive map.  
-The entire project runs inside Docker, including the database.
+The entire project runs inside Docker, including the database and background tasks.
 
 ---
 
@@ -11,6 +11,7 @@ The entire project runs inside Docker, including the database.
 - Built with **Django + PostgreSQL**  
 - Fully containerized with **Docker** and **Docker Compose**  
 - PostgreSQL running in Docker as an image
+- Background task processing with Celery + Redis (RabbitMQ)
 - Managed easily via **Makefile** commands  
 
 ---
@@ -21,6 +22,8 @@ The entire project runs inside Docker, including the database.
 - **Make** (usually preinstalled on Linux/macOS)  
 - **Python 3.11+**  
 - **PostgreSQL Docker image:** `postgres:15.2`
+- **RabbitMQ Docker image: rabbitmq:3.11.4 (for Celery tasks)
+- **Redis==6.4.0(for Celery tasks, used in production)
 
 ## ⚙️ Installation & Run
 1. Initialize configuration
@@ -30,6 +33,7 @@ Copy the example environment configuration:
 
 2. Run the project in Docker
 - make d-project-i-run
+ 
 
 
 🧩 Useful Makefile Commands
